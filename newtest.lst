@@ -1,0 +1,64 @@
+C51 COMPILER V9.50a   NEWTEST                                                              02/09/2021 11:13:38 PAGE 1   
+
+
+C51 COMPILER V9.50a, COMPILATION OF MODULE NEWTEST
+OBJECT MODULE PLACED IN .\newtest.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE C:\Users\dhaka\OneDrive\Desktop\minnor\newtest.c BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\newtest.lst) TABS(2) OBJECT(.\newtest.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          sbit output=P0^0;
+   3          
+   4          void msdelay(unsigned int time)  // Function for creating delay in milliseconds.
+   5          {
+   6   1          unsigned i,j ;
+   7   1          for(i=0;i<time;i++)    
+   8   1          for(j=0;j<1275;j++);
+   9   1      }
+  10          
+  11          void servo_delay(int times)     // Creating Delay in multilple of 50us using 8051 Timers
+  12          {
+  13   1          int m;
+  14   1          for(m=0;m<times;m++)
+  15   1          {
+  16   2              TH0=0xFF;
+  17   2              TL0=0xD2;
+  18   2              TR0=1;
+  19   2              while(TF0==0);
+  20   2              TF0=0;
+  21   2              TR0=0;
+  22   2          }
+  23   1      }
+  24          void main()
+  25          {
+  26   1          int n;
+  27   1          TMOD=0x01;                // Selecting Timer 0, Mode 1
+  28   1          output=0;
+  29   1          while(1)
+  30   1          {
+  31   2              for(n=13;n<28;n=n+2)
+  32   2              {
+  33   3                  output=1;
+  34   3                  servo_delay(n);     
+  35   3                  output=0;
+  36   3                  servo_delay(260);
+  37   3                  msdelay(200);
+  38   3              }
+  39   2          }
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    120    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
